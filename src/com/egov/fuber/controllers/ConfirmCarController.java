@@ -5,6 +5,7 @@ package com.egov.fuber.controllers;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,7 @@ import com.egov.fuber.utils.FuberConstants;
  * 
  */
 @Controller
-public class ReleaseCarController {
+public class ConfirmCarController {
 
 	@Autowired
 	private CarService carService;
@@ -38,23 +39,24 @@ public class ReleaseCarController {
 	 * @return
 	 * @throws ServiceException
 	 */
-	@RequestMapping(value = "releaseCarForm.view", method = RequestMethod.GET)
-	public String getReleaseCarFormPage(Model model) throws ServiceException {
-		List<Car> cars = carService.getConfirmedCars();
+	@RequestMapping(value = "confirmCarForm.view", method = RequestMethod.GET)
+	public String getConfirmCarFormPage(Model model) throws ServiceException {
+		List<Car> cars = carService.getBookedCars();
 		model.addAttribute("cars", cars);
-		return "releaseCarForm";
+		return "confirmCarForm";
 	}
 
-	@RequestMapping(value = "releaseCar.view", method = RequestMethod.GET)
-	public @ResponseBody String releaseCar(@RequestParam("carId") Integer carId) throws ServiceException {
-		List<Rides> rides = ridesService.getRideByCarIdForRelease(carId);
+	@RequestMapping(value = "confirmCar.view", method = RequestMethod.GET)
+	public @ResponseBody String confirmCar(@RequestParam("carId") Integer carId) throws ServiceException {
+
+		List<Rides> rides = ridesService.getRideByCarIdForConfirm(carId);
 		Rides ride = new Rides();
 		if (rides != null && !rides.isEmpty()) {
 			ride = rides.get(0);
-			ride.setStatus(FuberConstants.CAR_STATUS_RELEASED);
+			ride.setStatus(FuberConstants.CAR_STATUS_CONFIRMED);
 			ridesService.addRide(ride);
 		}
-		return "Car: " + ride.getCar().getName() + " has been released from the Customer: "
+		return "Car: " + ride.getCar().getName() + " has been confirmed for the Customer: "
 				+ ride.getCustomer().getName();
 	}
 }

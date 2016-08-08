@@ -28,4 +28,6 @@ public interface CarDao {
 	Car getCarById(Integer id) throws FetchException;
 
 	List<Car> getBookedCars()  throws FetchException;
+	
+	List<Car> getConfirmedCars()  throws FetchException;
 }

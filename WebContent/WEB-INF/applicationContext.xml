@@ -36,6 +36,7 @@
             <list>
                 <value>com.egov.fuber.entity.Car</value>
                 <value>com.egov.fuber.entity.Customer</value>
+                <value>com.egov.fuber.entity.Rides</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -75,6 +76,14 @@
     
     <bean id="customerService" class="com.egov.fuber.service.impl.CustomerServiceImpl">
         <property name="customerDao" ref="customerDao" />
+    </bean>
+    
+    <bean id="ridesDao" class="com.egov.fuber.dao.impl.RidesDaoImpl">
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
+    </bean>
+    
+    <bean id="ridesService" class="com.egov.fuber.service.impl.RidesServiceImpl">
+        <property name="ridesDao" ref="ridesDao" />
     </bean>
     
 </beans>

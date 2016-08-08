@@ -16,7 +16,11 @@
 <br />
 <a href="viewCars.view"><spring:message code="label.view.cars.href" /></a>
 <br />
+<a href="viewCustomers.view"><spring:message code="label.view.customers.href" /></a>
+<br />
 <a href="bookCarForm.view"><spring:message code="label.book.car.href" /></a>
+<br />
+<a href="confirmCarForm.view"><spring:message code="label.confirm.car.href" /></a>
 <br />
 <a href="releaseCarForm.view"><spring:message code="label.release.car.href" /></a>
 </body>

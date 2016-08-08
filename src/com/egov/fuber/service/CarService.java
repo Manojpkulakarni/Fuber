@@ -33,7 +33,8 @@ public interface CarService {
 
 	List<Car> getBookedCars() throws ServiceException;
 	
+	List<Car> getConfirmedCars() throws ServiceException;
+	
 	Car getCarById(Integer id) throws ServiceException;
 
-	void releaseCar(Car car) throws ServiceException;
 }

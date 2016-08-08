@@ -11,18 +11,19 @@ import com.egov.fuber.dao.CarDao;
 import com.egov.fuber.entity.Car;
 import com.egov.fuber.exceptions.FetchException;
 import com.egov.fuber.exceptions.PersistException;
+import com.egov.fuber.utils.FuberConstants;
 
 /**
  * @author Manoj Kulkarni
  *
  */
 public class CarDaoImpl implements CarDao {
-	
+
 	private HibernateTemplate hibernateTemplate;
-	
-	
+
 	/**
-	 * @param hibernateTemplate the hibernateTemplate to set
+	 * @param hibernateTemplate
+	 *            the hibernateTemplate to set
 	 */
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
@@ -48,7 +49,9 @@ public class CarDaoImpl implements CarDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Car> getAvailableCars() throws FetchException {
-		return hibernateTemplate.find("from Car where isAssigned = false or isAssigned = null");
+		return hibernateTemplate.find(
+				"from Car c where  not exists (select ride from Rides ride where c.id = ride.car.id and ride.status = ? or ride.status = ?) ",
+				FuberConstants.CAR_STATUS_BOOKED, FuberConstants.CAR_STATUS_CONFIRMED);
 	}
 
 	@Override
@@ -58,6 +61,11 @@ public class CarDaoImpl implements CarDao {
 
 	@Override
 	public List<Car> getBookedCars() throws FetchException {
-		return hibernateTemplate.find("from Car where isAssigned = true");
+		return hibernateTemplate.find("select car from Rides where status = ?", FuberConstants.CAR_STATUS_BOOKED);
+	}
+	
+	@Override
+	public List<Car> getConfirmedCars() throws FetchException {
+		return hibernateTemplate.find("select car from Rides where status = ?", FuberConstants.CAR_STATUS_CONFIRMED);
 	}
 }

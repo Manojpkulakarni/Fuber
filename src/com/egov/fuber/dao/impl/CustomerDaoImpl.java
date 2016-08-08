@@ -11,18 +11,19 @@ import com.egov.fuber.dao.CustomerDao;
 import com.egov.fuber.entity.Customer;
 import com.egov.fuber.exceptions.FetchException;
 import com.egov.fuber.exceptions.PersistException;
+import com.egov.fuber.utils.FuberConstants;
 
 /**
  * @author Manoj Kulkarni
  *
  */
 public class CustomerDaoImpl implements CustomerDao {
-	
+
 	private HibernateTemplate hibernateTemplate;
-	
-	
+
 	/**
-	 * @param hibernateTemplate the hibernateTemplate to set
+	 * @param hibernateTemplate
+	 *            the hibernateTemplate to set
 	 */
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
@@ -50,8 +51,11 @@ public class CustomerDaoImpl implements CustomerDao {
 		return hibernateTemplate.get(Customer.class, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Customer> getAvailableCustomers() throws FetchException {
-		return hibernateTemplate.find("from Customer where isBooked = false or isBooked = null");
+		return hibernateTemplate.find(
+				"from Customer c where not exists (select ride from Rides ride where c.id = ride.customer.id and ride.status = ? or ride.status = ?) ",
+				FuberConstants.CAR_STATUS_BOOKED, FuberConstants.CAR_STATUS_CONFIRMED);
 	}
 }

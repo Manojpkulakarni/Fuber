@@ -20,11 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.egov.fuber.dao.CarDao;
 import com.egov.fuber.entity.Car;
 import com.egov.fuber.entity.Customer;
+import com.egov.fuber.entity.Rides;
 import com.egov.fuber.exceptions.FetchException;
 import com.egov.fuber.exceptions.PersistException;
 import com.egov.fuber.exceptions.ServiceException;
 import com.egov.fuber.service.CarService;
 import com.egov.fuber.service.CustomerService;
+import com.egov.fuber.service.RidesService;
+import com.egov.fuber.utils.FuberConstants;
 
 /**
  * @author Manoj Kulkarni
@@ -37,6 +40,9 @@ public class CarServiceImpl implements CarService {
 
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private RidesService ridesService;
 
 	private Logger logger = Logger.getLogger(getClass());
 
@@ -125,6 +131,7 @@ public class CarServiceImpl implements CarService {
 		Map<Integer, Double> distanceMap = new HashMap<Integer, Double>();
 		List<Car> results = new ArrayList<Car>();
 		Car nearestCar = null;
+		Rides ride = new Rides();
 		try {
 			List<Car> cars = carDao.getAvailableCars();
 			for (Car car : cars) {
@@ -138,12 +145,12 @@ public class CarServiceImpl implements CarService {
 			}
 			if (!results.isEmpty()) {
 				nearestCar = results.get(0);
-				nearestCar.setCustomer(customer);
-				nearestCar.setIsAssigned(true);
-				customer.setCar(nearestCar);
-				customer.setIsBooked(true);
+				ride.setCar(nearestCar);
+				ride.setCustomer(customer);
+				ride.setStatus(FuberConstants.CAR_STATUS_BOOKED);
+				ridesService.addRide(ride);
+				nearestCar.getRides().add(ride);
 				carDao.addCar(nearestCar);
-				customerService.addCustomer(customer);
 			}
 			return nearestCar;
 		} catch (FetchException e) {
@@ -158,18 +165,13 @@ public class CarServiceImpl implements CarService {
 	}
 
 	@Override
+	public List<Car> getConfirmedCars() throws ServiceException {
+		return carDao.getConfirmedCars();
+	}
+
+	@Override
 	public Car getCarById(Integer id) throws ServiceException {
 		return carDao.getCarById(id);
 	}
 
-	@Override
-	public void releaseCar(Car car) throws ServiceException {
-		Customer customer = car.getCustomer();
-		car.setCustomer(null);
-		car.setIsAssigned(false);
-		customer.setCar(null);
-		customer.setIsBooked(false);
-		carDao.addCar(car);
-		customerService.addCustomer(customer);
-	}
 }

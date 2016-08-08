@@ -12,24 +12,27 @@
 </head>
 <body>
 	<div class="header">
-		<spring:message code="label.viewCarsFormHeader" />
+		<spring:message code="label.viewCustomersFormHeader" />
 	</div>
 	<table border="1px" cellpadding="0">
 		<thead>
 			<tr>
 				<td><spring:message code="label.name" /></td>
-				<td><spring:message code="label.color" /></td>
+				<td><spring:message code="label.phoneNumber" /></td>
+				<td><spring:message code="label.sex" /></td>
 				<td><spring:message code="label.longitude" /></td>
 				<td><spring:message code="label.latitude" /></td>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${cars }" var="car">
+			<c:forEach items="${customers }" var="customer">
 			<tr>
-				<td>${car.name }</td>
-				<td>${car.color }</td>
-				<td>${car.longitude }</td>
-				<td>${car.latitude }</td>
+				<td>${customer.name }</td>
+				<td>${customer.phoneNumber }</td>
+				<td>${customer.sex }</td>
+				<td>${customer.longitude }</td>
+				<td>${customer.latitude }</td>
+				<td><input type="button" value='<spring:message code="label.viewBookingHistoryBtn" />' onclick='viewBookingHistory(${customer.id});'/></td>
 			</tr>
 			</c:forEach>
 		</tbody>
@@ -39,7 +42,26 @@
 			<td><input type="button" value='<spring:message code="label.backBtn" />' onclick='window.location.href="cancel.view"'/></td>
 		</tr>
 	</table>
+	
+	<div id="message" style="display: none;">
+	</div>
+	<div id="searchResults" style="display: none;">
+		<table border="1px">
+			<thead>
+				<tr>
+					<td><spring:message code="label.name" /></td>
+					<td><spring:message code="label.color" /></td>
+					<td><spring:message code="label.longitude" /></td>
+					<td><spring:message code="label.latitude" /></td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody id="results">
+			</tbody>
+		</table>
+	</div>
+	
 </body>
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="js/carHelper.js"></script>
+<script type="text/javascript" src="js/viewBookingHistory.js"></script>
 </html>

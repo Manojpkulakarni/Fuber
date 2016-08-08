@@ -1,43 +1,44 @@
 package com.egov.fuber.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * @author Manoj Kulkarni
  *
  */
 @Entity
-@Table(name="CARS")
+@Table(name = "CARS")
 public class Car {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Integer id;
-	
+
 	private String name;
-	
+
 	private String color;
-	
-	@Column(name="is_assigned")
-	private Boolean isAssigned;
-	
+
 	private Double longitude;
-	
+
 	private Double latitude;
-	
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer")
-	private Customer customer;
-	
+
+	@JsonIgnore
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "car", targetEntity = Rides.class)
+	private List<Rides> rides;
+
 	public Car() {
 	}
 
@@ -65,14 +66,6 @@ public class Car {
 		this.color = color;
 	}
 
-	public Boolean getIsAssigned() {
-		return isAssigned;
-	}
-
-	public void setIsAssigned(Boolean isAssigned) {
-		this.isAssigned = isAssigned;
-	}
-
 	public Double getLongitude() {
 		return longitude;
 	}
@@ -89,11 +82,12 @@ public class Car {
 		this.latitude = latitude;
 	}
 
-	public Customer getCustomer() {
-		return customer;
+	public List<Rides> getRides() {
+		return rides;
 	}
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setRides(List<Rides> rides) {
+		this.rides = rides;
 	}
+
 }

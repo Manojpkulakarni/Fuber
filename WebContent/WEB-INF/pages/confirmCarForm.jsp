@@ -12,33 +12,27 @@
 </head>
 <body>
 	<div class="header">
-		<spring:message code="label.viewCarsFormHeader" />
+		<spring:message code="header.confirm.car" />
 	</div>
-	<table border="1px" cellpadding="0">
-		<thead>
-			<tr>
-				<td><spring:message code="label.name" /></td>
-				<td><spring:message code="label.color" /></td>
-				<td><spring:message code="label.longitude" /></td>
-				<td><spring:message code="label.latitude" /></td>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${cars }" var="car">
-			<tr>
-				<td>${car.name }</td>
-				<td>${car.color }</td>
-				<td>${car.longitude }</td>
-				<td>${car.latitude }</td>
-			</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-	<table align="center" width="70%">
+	<table>
 		<tr>
-			<td><input type="button" value='<spring:message code="label.backBtn" />' onclick='window.location.href="cancel.view"'/></td>
+			<td><spring:message code="label.car" /></td>
+			<td>
+				<select id="car" name="car">
+					<option value="">Select</option>
+					<c:forEach items="${cars }" var="car">
+						<option value="${car.id }">${car.name }</option>
+					</c:forEach>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td><input type="button" value='<spring:message code="label.confirmBtn" />' onclick='confirmCar();'/></td>
+			<td><input type="button" value='<spring:message code="label.CancelBtn" />' onclick='window.location.href="cancel.view"'/></td>
 		</tr>
 	</table>
+	<div id="message" style="display: none;">
+	</div>
 </body>
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="js/carHelper.js"></script>

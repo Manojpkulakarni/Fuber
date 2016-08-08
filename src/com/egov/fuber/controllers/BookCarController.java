@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +19,7 @@ import com.egov.fuber.entity.Customer;
 import com.egov.fuber.exceptions.ServiceException;
 import com.egov.fuber.service.CarService;
 import com.egov.fuber.service.CustomerService;
+import com.egov.fuber.service.RidesService;
 
 /**
  * @author Manoj Kulkarni
@@ -35,7 +35,7 @@ public class BookCarController {
 	private CustomerService customerService;
 
 	@Autowired
-	private MessageSource messageSource;
+	private RidesService ridesService;
 
 	private static final Logger LOGGER = Logger.getLogger(BookCarController.class);
 
@@ -68,4 +68,5 @@ public class BookCarController {
 		else
 			return "Request has been rejected as no cabs available at this moment";
 	}
+
 }

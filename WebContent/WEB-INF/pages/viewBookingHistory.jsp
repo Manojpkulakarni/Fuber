@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class="header">
-		<spring:message code="label.viewCarsFormHeader" />
+		<spring:message code="label.viewBookingHistoryFormHeader" />
 	</div>
 	<table border="1px" cellpadding="0">
 		<thead>
@@ -21,25 +21,21 @@
 				<td><spring:message code="label.color" /></td>
 				<td><spring:message code="label.longitude" /></td>
 				<td><spring:message code="label.latitude" /></td>
+				<td><spring:message code="label.status" /></td>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${cars }" var="car">
+			<c:forEach items="${rides }" var="ride">
 			<tr>
-				<td>${car.name }</td>
-				<td>${car.color }</td>
-				<td>${car.longitude }</td>
-				<td>${car.latitude }</td>
+				<td>${ride.car.name }</td>
+				<td>${ride.car.color }</td>
+				<td>${ride.car.longitude }</td>
+				<td>${ride.car.latitude }</td>
+				<td>${ride.status }</td>
 			</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	<table align="center" width="70%">
-		<tr>
-			<td><input type="button" value='<spring:message code="label.backBtn" />' onclick='window.location.href="cancel.view"'/></td>
-		</tr>
-	</table>
+	
 </body>
-<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="js/carHelper.js"></script>
 </html>

@@ -1,51 +1,45 @@
 package com.egov.fuber.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * @author Manoj Kulkarni
  *
  */
 @Entity
-@Table(name="CUSTOMERS")
+@Table(name = "CUSTOMERS")
 public class Customer {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
-	private Integer id;
-	
-	private String name;
-	
-	private String phoneNumber;
-	
-	private Boolean isBooked;
-	
-	private String sex;
-	
-	private Double longitude;
-	
-	private Double latitude;
-	
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "car")
-	private Car car;
-	
-	public Car getCar() {
-		return car;
-	}
 
-	public void setCar(Car car) {
-		this.car = car;
-	}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
+
+	private String name;
+
+	private String phoneNumber;
+
+	private String sex;
+
+	private Double longitude;
+
+	private Double latitude;
+
+	@JsonIgnore
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL , fetch=FetchType.EAGER,mappedBy="car",targetEntity=Rides.class )
+	private List<Rides> rides;
 
 	public Customer() {
 	}
@@ -82,14 +76,6 @@ public class Customer {
 		this.latitude = latitude;
 	}
 
-	public Boolean getIsBooked() {
-		return isBooked;
-	}
-
-	public void setIsBooked(Boolean isBooked) {
-		this.isBooked = isBooked;
-	}
-
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -105,4 +91,14 @@ public class Customer {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
+
+	public List<Rides> getRides() {
+		return rides;
+	}
+
+	public void setRides(List<Rides> rides) {
+		this.rides = rides;
+	}
+	
+	
 }
